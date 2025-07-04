@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import net.datafaker.Faker;
+import org.example.customexceptions.NotAbleToDeleteException;
 import org.example.customexceptions.NotfoundException;
 import org.example.daos.GeneralDao;
 import org.example.daos.ProdBibliotecaDao;
@@ -106,9 +107,17 @@ public class Application {
         //metodo per ricerca con titolo anche parziale
         try {
             List<ProdottoBiblioteca> booksByTitle = prodBibliotecaDao.getByPartialTitle("the");
-            booksByTitle.forEach(System.out::println);
+            // booksByTitle.forEach(System.out::println);
         } catch (NotfoundException ex) {
             throw new NotfoundException("trovato nulla ,prova ancora");
+        }
+
+        //metodo per cancellare dal db
+        try {
+            prodBibliotecaDao.deleteByIsbn(466490830);
+            System.out.println("deleted successfully");
+        } catch (NotAbleToDeleteException ex) {
+            throw new NotAbleToDeleteException("delete oparation was not successful");
         }
 
         //giusto per convenzione

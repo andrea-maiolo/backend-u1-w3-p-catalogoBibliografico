@@ -2,6 +2,8 @@ package org.example.daos;
 
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.example.entities.Book;
 import org.example.entities.ProdottoBiblioteca;
@@ -35,11 +37,20 @@ public class ProdBibliotecaDao {
         return query.getResultList();
     }
 
+
     public List<ProdottoBiblioteca> getByPartialTitle(String title) {
         TypedQuery<ProdottoBiblioteca> query = entityManager.createQuery("SELECT pb FROM ProdottoBiblioteca pb WHERE pb.title ILIKE :title",
                 ProdottoBiblioteca.class);
         query.setParameter("title", "%" + title + "%");
         return query.getResultList();
+    }
+
+    public void deleteByIsbn(long isbn) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        Query deleteQuery = entityManager.createQuery("DELETE FROM ProdottoBiblioteca pb WHERE pb.isbn = :isbn");
+        deleteQuery.setParameter("isbn", isbn);
+        transaction.commit();
     }
 
 }
