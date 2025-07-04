@@ -9,7 +9,7 @@ public abstract class ProdottoBiblioteca {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     protected long id;
-    protected String isbn;
+    protected long isbn;
     protected String title;
     protected int publicationYear;
     protected int numberOfPages;
@@ -18,7 +18,7 @@ public abstract class ProdottoBiblioteca {
     public ProdottoBiblioteca() {
     }
 
-    public ProdottoBiblioteca(String isbn, String title, int publicationYear, int numberOfPages) {
+    public ProdottoBiblioteca(long isbn, String title, int publicationYear, int numberOfPages) {
         this.isbn = isbn;
         this.publicationYear = publicationYear;
         this.numberOfPages = numberOfPages;
@@ -54,10 +54,10 @@ public abstract class ProdottoBiblioteca {
         this.title = title;
     }
 
-    public String getIsbn() {
+    public long getIsbn() {
         return isbn;
     }
-    
+
 
     @Override
     public String toString() {

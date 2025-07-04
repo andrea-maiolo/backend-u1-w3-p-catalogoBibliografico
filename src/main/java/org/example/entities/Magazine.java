@@ -15,7 +15,7 @@ public class Magazine extends ProdottoBiblioteca {
     public Magazine() {
     }
 
-    public Magazine(String isbn, String title, int publicationYear, int numberOfPages, Frequency frequency) {
+    public Magazine(long isbn, String title, int publicationYear, int numberOfPages, Frequency frequency) {
         super(isbn, title, publicationYear, numberOfPages);
         this.frequency = frequency;
     }
@@ -32,6 +32,11 @@ public class Magazine extends ProdottoBiblioteca {
     public String toString() {
         return "Magazine{" +
                 "frequency=" + frequency +
+                ", id=" + id +
+                ", isbn=" + isbn +
+                ", title='" + title + '\'' +
+                ", publicationYear=" + publicationYear +
+                ", numberOfPages=" + numberOfPages +
                 '}';
     }
 }

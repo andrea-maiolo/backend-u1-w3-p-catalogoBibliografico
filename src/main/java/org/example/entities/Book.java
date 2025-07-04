@@ -12,7 +12,7 @@ public class Book extends ProdottoBiblioteca {
     public Book() {
     }
 
-    public Book(String isbn, String title, int publicationYear, int numberOfPages, String author, String genre) {
+    public Book(long isbn, String title, int publicationYear, int numberOfPages, String author, String genre) {
         super(isbn, title, publicationYear, numberOfPages);
         this.author = author;
         this.genre = genre;

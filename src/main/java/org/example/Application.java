@@ -6,13 +6,16 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import net.datafaker.Faker;
 import org.example.daos.GeneralDao;
+import org.example.daos.ProdBibliotecaDao;
 import org.example.entities.Book;
 import org.example.entities.Magazine;
+import org.example.entities.ProdottoBiblioteca;
 import org.example.entities.User;
 import org.example.enums.Frequency;
 
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class Application {
@@ -22,13 +25,15 @@ public class Application {
     public static void main(String[] args) {
         EntityManager entityManager = emf.createEntityManager();
         GeneralDao generalDao = new GeneralDao<>(entityManager);
+        ProdBibliotecaDao prodBibliotecaDao = new ProdBibliotecaDao(entityManager);
         Faker faker = new Faker(Locale.ITALY);
+        Random random = new Random();
 
         Supplier<Book> bookSupplier = () -> {
             String bTitle = faker.book().title();
             String bAuthor = faker.book().author();
             String bGenre = faker.book().genre();
-            String bIsbn = String.valueOf(faker.hashCode());
+            long bIsbn = random.nextLong(100000000, 900000000);
             int bPublicationYear = faker.number().numberBetween(1800, 2025);
             int bNumberOfPages = faker.number().numberBetween(100, 1000);
 
@@ -38,7 +43,7 @@ public class Application {
 
 
         Supplier<Magazine> magazineSupplier = () -> {
-            String mIsbn = String.valueOf(faker.hashCode());
+            long mIsbn = random.nextLong(100000000, 900000000);
             String mTitle = faker.dcComics().title();
             int mPublicatioYear = faker.number().numberBetween(1960, 2025);
             int mNumberOfPages = faker.number().numberBetween(20, 100);
@@ -48,22 +53,18 @@ public class Application {
             return newMagazine;
         };
 
-        Book book1 = new Book("9780142437247", "moby dick", 1851,
-                635, "Herman Melville", "adventure");
-
 
         //aggiunta elementi al catalogo
 //        for (int i = 0; i < 5; i++) {
-//         generalDao.saveInDb((bookSupplier.get()));
+//            generalDao.saveInDb((bookSupplier.get()));
 //            generalDao.saveInDb(magazineSupplier.get());
 //        }
-//
+
         Supplier<User> userSupplier = () -> {
             String uName = faker.name().firstName();
             String uSurname = faker.name().lastName();
             LocalDate uDob = faker.date().birthdayLocalDate();
-            int uMembershipCardNumber = faker.number().numberBetween(1000000, 900000);
-
+            long uMembershipCardNumber = random.nextLong(100000000, 900000000);
             User newUser = new User(uName, uSurname, uDob, uMembershipCardNumber);
             return newUser;
         };
@@ -73,9 +74,11 @@ public class Application {
 //            generalDao.saveInDb(userSupplier.get());
 //        }
 
-        //ProdottoBiblioteca bookFromDb = (ProdottoBiblioteca) myDao.getWithIsbn(ProdottoBiblioteca.class, "9780142437247");
-//        ProdottoBiblioteca bookFromDb = myDao.getBokByIsbn("9780142437247");
-//        System.out.println(bookFromDb);
+        // metodo con query per avere prodotto biblio dal codice isbn
+        ProdottoBiblioteca prodfromDb = prodBibliotecaDao.getByIsbnCode(748443023);
+        System.out.println(prodfromDb);
+        ProdottoBiblioteca prodFromDb2 = prodBibliotecaDao.getByIsbnCode(138807158);
+        System.out.println(prodFromDb2);
 
 
         //giusto per convenzione
