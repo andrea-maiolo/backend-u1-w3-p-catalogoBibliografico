@@ -79,21 +79,37 @@ public class Application {
         // metodo con query per avere prodotto biblio dal codice isbn
         try {
             ProdottoBiblioteca prodfromDb = prodBibliotecaDao.getByIsbnCode(748443023);
-            System.out.println(prodfromDb);
+            // System.out.println(prodfromDb);
             ProdottoBiblioteca prodFromDb2 = prodBibliotecaDao.getByIsbnCode(138807158);
-            System.out.println(prodFromDb2);
+            //System.out.println(prodFromDb2);
 
         } catch (NotfoundException ex) {
             throw new NotfoundException("prodotto non trovato, controlla il codice");
         }
 
+        //      metodo per lista prodotti biblio dall anno
         try {
             List<ProdottoBiblioteca> prodDb = prodBibliotecaDao.getByPublicationYear(1954);
-            prodDb.forEach(System.out::println);
+            // prodDb.forEach(System.out::println);
         } catch (NotfoundException ex) {
             throw new NotfoundException("prodotto non trovato, controlla anno");
         }
 
+        //metodo per lista libri per autore
+        try {
+            List<Book> bookListSameAuthor = prodBibliotecaDao.getByAuthor("Eriberto Vitale");
+            // bookListSameAuthor.forEach(System.out::println);
+        } catch (NotfoundException ex) {
+            throw new NotfoundException("prodotto non trovato, controlla anno");
+        }
+
+        //metodo per ricerca con titolo anche parziale
+        try {
+            List<ProdottoBiblioteca> booksByTitle = prodBibliotecaDao.getByPartialTitle("the");
+            booksByTitle.forEach(System.out::println);
+        } catch (NotfoundException ex) {
+            throw new NotfoundException("trovato nulla ,prova ancora");
+        }
 
         //giusto per convenzione
         entityManager.close();
