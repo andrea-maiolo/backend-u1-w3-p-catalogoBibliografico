@@ -26,4 +26,14 @@ public class LoanDao {
         return query.getResultList();
     }
 
+    //metodo corretto perche ho fatto onetone, questo l'ho aggiunto dopo le 5
+//    public ProdottoBiblioteca getCurrentlyBorrowedItems(long membershipCardNumber) {
+//        TypedQuery<ProdottoBiblioteca> query = em.createQuery(
+//                "SELECT l.borrowedItem FROM Loan l WHERE l.user.membershipCardNumber = :cardNumber AND l.actualReturn IS NULL",
+//                ProdottoBiblioteca.class
+//        );
+//        query.setParameter("cardNumber", membershipCardNumber);
+//        return query.getSingleResult();
+//    }
+
 }
