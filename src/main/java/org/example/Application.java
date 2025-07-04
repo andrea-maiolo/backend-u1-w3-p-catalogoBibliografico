@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import net.datafaker.Faker;
+import org.example.customexceptions.NotfoundException;
 import org.example.daos.GeneralDao;
 import org.example.daos.ProdBibliotecaDao;
 import org.example.entities.Book;
@@ -14,6 +15,7 @@ import org.example.entities.User;
 import org.example.enums.Frequency;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -75,10 +77,22 @@ public class Application {
 //        }
 
         // metodo con query per avere prodotto biblio dal codice isbn
-        ProdottoBiblioteca prodfromDb = prodBibliotecaDao.getByIsbnCode(748443023);
-        System.out.println(prodfromDb);
-        ProdottoBiblioteca prodFromDb2 = prodBibliotecaDao.getByIsbnCode(138807158);
-        System.out.println(prodFromDb2);
+        try {
+            ProdottoBiblioteca prodfromDb = prodBibliotecaDao.getByIsbnCode(748443023);
+            System.out.println(prodfromDb);
+            ProdottoBiblioteca prodFromDb2 = prodBibliotecaDao.getByIsbnCode(138807158);
+            System.out.println(prodFromDb2);
+
+        } catch (NotfoundException ex) {
+            throw new NotfoundException("prodotto non trovato, controlla il codice");
+        }
+
+        try {
+            List<ProdottoBiblioteca> prodDb = prodBibliotecaDao.getByPublicationYear(1954);
+            prodDb.forEach(System.out::println);
+        } catch (NotfoundException ex) {
+            throw new NotfoundException("prodotto non trovato, controlla anno");
+        }
 
 
         //giusto per convenzione
