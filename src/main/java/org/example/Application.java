@@ -22,8 +22,8 @@ public class Application {
 
         //myDao.saveInDb(book1);
 
-        ProdottoBiblioteca bookFromDb = (ProdottoBiblioteca) myDao.getWithIsbn(ProdottoBiblioteca.class, "9780142437247");
-        //ProdottoBiblioteca bookFromDb = myDao.getBokByIsbn("9780142437247");
+        //ProdottoBiblioteca bookFromDb = (ProdottoBiblioteca) myDao.getWithIsbn(ProdottoBiblioteca.class, "9780142437247");
+        ProdottoBiblioteca bookFromDb = myDao.getBokByIsbn("9780142437247");
         System.out.println(bookFromDb);
 
 

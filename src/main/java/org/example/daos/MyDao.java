@@ -20,12 +20,12 @@ public class MyDao<T> {
         transaction.commit();
     }
 
-    public T getWithIsbn(Class<T> entityClass, String isbn) {
-        TypedQuery<T> query = entityManager.createQuery("SELECT bp FROM ProdottoBiblioteca bp WHERE bp.isbn = :isbn", entityClass.getClass());
-        query.setParameter("isbn", isbn);
-        return query.getSingleResult();
-
-    }
+//    public T getWithIsbn(Class<T> entityClass, String isbn) {
+//        TypedQuery<T> query = entityManager.createQuery("SELECT bp FROM ProdottoBiblioteca bp WHERE bp.isbn = :isbn", entityClass.getClass());
+//        query.setParameter("isbn", isbn);
+//        return query.getSingleResult();
+//
+//    }
 
     public ProdottoBiblioteca getBokByIsbn(String isbn) {
         TypedQuery<ProdottoBiblioteca> query = entityManager.createQuery("SELECT bp FROM ProdottoBiblioteca bp WHERE bp.isbn = :isbn", ProdottoBiblioteca.class);
