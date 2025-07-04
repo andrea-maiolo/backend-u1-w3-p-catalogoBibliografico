@@ -5,14 +5,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import net.datafaker.Faker;
-import org.example.customexceptions.NotAbleToDeleteException;
 import org.example.customexceptions.NotfoundException;
 import org.example.daos.GeneralDao;
+import org.example.daos.LoanDao;
 import org.example.daos.ProdBibliotecaDao;
-import org.example.entities.Book;
-import org.example.entities.Magazine;
-import org.example.entities.ProdottoBiblioteca;
-import org.example.entities.User;
+import org.example.entities.*;
 import org.example.enums.Frequency;
 
 import java.time.LocalDate;
@@ -29,6 +26,7 @@ public class Application {
         EntityManager entityManager = emf.createEntityManager();
         GeneralDao generalDao = new GeneralDao<>(entityManager);
         ProdBibliotecaDao prodBibliotecaDao = new ProdBibliotecaDao(entityManager);
+        LoanDao loanDao = new LoanDao(entityManager);
         Faker faker = new Faker(Locale.ITALY);
         Random random = new Random();
 
@@ -112,12 +110,47 @@ public class Application {
             throw new NotfoundException("trovato nulla ,prova ancora");
         }
 
-        //metodo per cancellare dal db
+        //metodo per cancellare dal db da rivedere perche e sempre ok ma non cancella niente
+//        try {
+//            prodBibliotecaDao.deleteByIsbn(466490830);
+//            System.out.println("deleted successfully");
+//        } catch (NotAbleToDeleteException ex) {
+//            throw new NotAbleToDeleteException("delete oparation was not successful");
+//        }
+
+        User userFromDb = generalDao.getUserById("29ca16bb-1e11-458e-bb87-01a4876c0412");
+        //System.out.println(userFromDb);
+
+        ProdottoBiblioteca prodfromDb3 = prodBibliotecaDao.getById(102);
+        //System.out.println(prodfromDb3);
+
+        Loan newLoan = new Loan(userFromDb, prodfromDb3, LocalDate.now());
+        // System.out.println(newLoan);
+
+        ProdottoBiblioteca prodfromDb4 = prodBibliotecaDao.getById(103);
+        User userFromDb2 = generalDao.getUserById("36dbf4ea-44fe-4780-97d4-d490c0d62ed4");
+        // System.out.println(userFromDb2);
+        Loan newLoan2 = new Loan(userFromDb2, prodfromDb4, LocalDate.of(2024, 03, 03));
+        newLoan2.setActualReturn(LocalDate.of(2024, 03, 20));
+
+        //generalDao.saveInDb(newLoan2);
+
+        //generalDao.saveInDb(newLoan);
+
+        //metodo per vedere quali item sono in prestito data la tessera dello user
+        //con eccezione
         try {
-            prodBibliotecaDao.deleteByIsbn(466490830);
-            System.out.println("deleted successfully");
-        } catch (NotAbleToDeleteException ex) {
-            throw new NotAbleToDeleteException("delete oparation was not successful");
+            List<ProdottoBiblioteca> borrowedItems = loanDao.getCurrentlyBorrowedItems(658102119);
+            borrowedItems.forEach(p -> System.out.println(p));
+        } catch (NotfoundException ex) {
+            throw new NotfoundException("no items are borrowed by this user");
+        }
+//senza eccezione
+        try {
+            List<ProdottoBiblioteca> borrowedItems = loanDao.getCurrentlyBorrowedItems(644488565);
+            borrowedItems.forEach(p -> System.out.println(p));
+        } catch (NotfoundException ex) {
+            throw new NotfoundException("no items are borrowed by this user");
         }
 
         //giusto per convenzione

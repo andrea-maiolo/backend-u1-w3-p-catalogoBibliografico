@@ -17,6 +17,13 @@ public class ProdBibliotecaDao {
         this.entityManager = em;
     }
 
+    public ProdottoBiblioteca getById(long id) {
+        TypedQuery<ProdottoBiblioteca> query = entityManager.createQuery("SELECT pb FROM ProdottoBiblioteca pb WHERE pb.id = :id",
+                ProdottoBiblioteca.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
+    }
+
     public ProdottoBiblioteca getByIsbnCode(long isbn) {
         TypedQuery<ProdottoBiblioteca> query = entityManager.createQuery("SELECT pb FROM ProdottoBiblioteca pb WHERE pb.isbn = :isbn",
                 ProdottoBiblioteca.class);
