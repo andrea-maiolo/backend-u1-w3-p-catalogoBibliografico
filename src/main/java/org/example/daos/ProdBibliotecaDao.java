@@ -2,14 +2,20 @@ package org.example.daos;
 
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import org.example.entities.ProdottoBiblioteca;
 
 public class ProdBibliotecaDao {
     private EntityManager entityManager;
 
-    public ProdBibliotecaDao(EntityManager em){
+    public ProdBibliotecaDao(EntityManager em) {
         this.entityManager = em;
     }
 
-    public 
+    public ProdottoBiblioteca getByIsbnCode(String isbn) {
+        TypedQuery<ProdottoBiblioteca> query = entityManager.createQuery("SELECT pb FROM ProdottoBiblioteca pb WHERE pb.isbn = :isbn");
+        query.setParameter("isbn", isbn);
+        return query.getSingleResult();
+    }
 
 }
