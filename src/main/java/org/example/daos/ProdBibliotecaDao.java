@@ -57,6 +57,8 @@ public class ProdBibliotecaDao {
         transaction.begin();
         Query deleteQuery = entityManager.createQuery("DELETE FROM ProdottoBiblioteca pb WHERE pb.isbn = :isbn");
         deleteQuery.setParameter("isbn", isbn);
+//        entityManager.remove(deleteQuery); ????????
+//        entityManager.persist(deleteQuery); ???????
         transaction.commit();
     }
 
